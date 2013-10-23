@@ -1,0 +1,271 @@
+/**
+ *   trc.me default stylesheet.
+ * 
+ * Standard colours
+ * ----------------
+ * 
+ * yellow: #ffde16
+ * charcoal: #58585a
+ * 
+ */
+
+body {
+  margin: 0;
+  font-family: sans-serif;
+  font-size: 80%;
+  /*color: #58585a;  */
+  color: #222222;
+}
+
+h1 {
+  text-align: center;
+}
+
+#sidepanel h2 {
+  font-weight: normal;
+}
+
+a {
+  color: #3399CC;
+  text-decoration: none;
+}
+
+th {
+  vertical-align: top;
+  text-align: right;
+}
+
+input[type=text] {
+  font-size: 100%;
+  width: 10em;
+  color: gray;
+  border: 1px solid silver;
+  border-radius: 6px;
+  -moz-border-radius: 6px;
+  padding: 5px;
+  margin: 5px 0 5px 0;
+}
+
+input[type=password] {
+  font-size: 100%;
+  width: 10em;
+  color: gray;
+  border: 1px solid silver;
+  border-radius: 6px;
+  -moz-border-radius: 6px;
+  padding: 5px;
+  margin: 5px 0 5px 0;
+}
+
+button, input[type=submit] {
+  font-size: 100%;
+  font-weight: bold;
+  color: #777; /*#A8A8A8;*/
+  background-color: #E8E8E8;
+  border: 1px solid silver;
+  border-radius: 6px;
+  -moz-border-radius: 6px;
+  padding: 5px;
+}
+
+input[type=image] {
+  border: 0;
+}
+
+textarea {
+  vertical-align: text-top;
+}
+
+hr {
+  border: 0;
+}
+
+img {
+  border: 0;
+  vertical-align: text-top;
+}
+
+.flag_row {
+  /* background-color: rgba(204, 204, 204, 0.75); */
+  border-top: 1px dotted #ccc;
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  padding: 2px;
+  margin-top: 2px;
+}
+
+.flag_description {
+  background-color: rgba(221, 221, 221, 0.75); 
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  padding: 4px;
+}
+
+.tag_row {
+  background-color: rgba(221, 221, 221, 0.75); 
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  padding: 2px;
+  margin-top: 2px;
+}
+
+.thumb_container {
+  float: left; 
+  padding: 2px;
+}
+
+.flag_thumb {
+  height: 2em;
+}
+
+.rowbreak {
+  clear: both;
+}
+
+dd {
+  border-bottom: 1px dotted #ccc;
+}
+
+#sidepanel h1 {
+  /* Standard comment templates use h1 for headings */
+  text-align: left;
+  font-size: 1em;
+}
+
+/* --------------------------------------- Specific elements */
+
+#hashtags_span {
+  color: blue;
+  
+}
+
+#map_canvas {
+  position: absolute;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #99B3CC; /* Google Maps sea blue */
+}
+
+#dialogs_container {
+  position: absolute;
+  z-index: 1;
+  left: 80px;
+  top: 26px;
+  /* sidepanel-visible width: 678px */
+  /* sidepanel-hidden width: 228px */
+  width: 678px;
+  height: 488px;
+}
+
+#dialog_outer {
+  width: 220px;
+  /*height: 430px;*/
+  height: 480px;
+  background-color: rgba(255, 255, 255, 0.75);
+  border: 1px solid #58585a;
+  border-radius: 6px;
+  -moz-border-radius: 6px;
+  padding: 3px;
+}
+
+.titlebar {
+  height: 20px;
+  background-color: rgba(88, 88, 88, 0.75);
+  padding: 2px;
+  margin-bottom: 2px;
+  cursor: move;
+  text-align: left;
+  color: silver;
+  font-size: small;
+  overflow: hidden;
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+}
+
+.titlebar .panel_icon {
+  float: right; 
+  margin: 2px;
+}
+
+.titlebar a {
+  color: #ccc;
+}
+
+#dialog_titlebar {
+  width: 216px; /* 220 - 2 * 2 = 216 */
+}
+
+#dialog {
+  width: 210px;
+  height: 450px;
+  padding: 5px;
+  text-align: left;
+  overflow: auto;
+}
+
+#sidepanel_outer {
+  margin-left: 2px;
+  border: 1px solid #58585a;
+  border-radius: 6px;
+  -moz-border-radius: 6px;
+  padding: 3px;
+  background-color: rgba(255, 255, 255, 0.75);
+  width: 440px;
+  height: 480px;
+  float: left;
+}
+
+#sidepanel_titlebar {
+  width: 436px;
+}
+
+#sidepanel {
+  width: 430px;
+  height: 445px;
+  padding: 5px;
+  overflow: auto;
+}
+
+#dialog_content {
+  width: 210px;
+  padding: 0;
+  height: 410px;
+  overflow: auto;
+}
+
+#dialog_nav {
+  width: 210px;
+  padding: 0;
+  height: 20px;
+  text-align: center;
+}
+
+.keyword {
+  font-weight: bold;
+}
+
+/** Used to emphasise the trc.me trademark */
+.tm {
+  font-weight: bold;
+  font-style: italic;
+}
+
+.important {
+  color: red;
+}
+
+.map img {
+  border: 1px solid #58585a;
+}
+
+.char_count {
+  color: gray;
+}
+
+footer nav {
+  display: block;
+  margin-top: 2em;
+  font-size: smaller;
+  text-align: center;
+}

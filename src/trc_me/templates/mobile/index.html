@@ -1,0 +1,77 @@
+{% extends "mobile/base.html" %}
+{% comment %}
+This file is part of trc.me.
+
+trc.me is free software: you can redistribute it and/or modify it under the
+terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
+
+trc.me is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+details.
+
+You should have received a copy of the GNU General Public License along with
+trc.me. If not, see <http://www.gnu.org/licenses/>.
+
+{% endcomment %}
+
+{% block head %}
+<script type="text/javascript">
+
+$(document).ready(function () {
+  // Run scripts for placeholder text, etc.
+  trcme.dialog.login.onReady();
+  trcme.dialog.index.onReady();
+});
+
+</script>
+{% endblock %}
+
+{% block dialog %}
+<div id="dialog_content">
+  <h1><img src="{{ MEDIA_URL }}img/logo.png" alt="trc.me" /></h1>
+  
+  {% if not user.is_authenticated %}
+  {% with authform as form %}
+  {% include "mobile/login_dialog.html" %}
+  {% endwith %}
+  <hr />
+  {% endif %}
+
+  {% if user.is_authenticated %}
+  <h3><a href="{% url trc_me.web.views.create_tag %}">Create a new tag</a></h3>
+  {% endif %}
+  
+  <form action="{% url trc_me.web.views.mobile_update_tag %}" method="get">
+    <p>
+      <noscript><label for="code">Enter a tag to flag it: </label></noscript>
+      <input name="code"  
+             type="text" 
+             placeholder="Enter a tag to flag it" />
+      <input type="submit" value="Go" />
+    </p>
+  </form>
+  
+  <form action="{% url trc_me.web.views.search %}" method="get">
+    <p>
+      <noscript><label for="q">Search for flags: </label></noscript>
+      <input name="q" 
+             type="text" 
+             placeholder="Search for flags" />
+      <input type="submit" value="Go" />
+    </p>
+  </form>
+  
+</div>
+<div id="dialog_nav">
+  <nav>
+    <a href="{% url trc_me.web.views.mobile_view_page slug='how-it-works' %}">How it works</a>
+    {% if user.is_authenticated %}
+    | <a href="{% url trc_me.web.views.view_user username=user.username %}">Your profile</a>
+    {% endif %}
+    | <a href="?mobi=False">Full version</a> (requires JavaScript and at least 800x600)
+  </nav>
+</div>
+{% endblock %}

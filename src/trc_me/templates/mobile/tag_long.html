@@ -1,0 +1,93 @@
+{% comment %}
+This file is part of trc.me.
+
+trc.me is free software: you can redistribute it and/or modify it under the
+terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
+
+trc.me is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+details.
+
+You should have received a copy of the GNU General Public License along with
+trc.me. If not, see <http://www.gnu.org/licenses/>.
+
+{% endcomment %}
+{% load humanize %}
+
+{% include "mobile/tag_short.html" %}
+
+
+<div style="text-align: right">
+  {% if tag.user == user %}
+  <a href="{% url trc_me.web.views.edit_tag id=tag.id %}">
+    <img src="{{ MEDIA_URL }}img/tag_blue_edit.png" 
+         alt="Edit tag"
+         title="Edit tag" />
+  </a>
+  <a href="{% url trc_me.web.views.print_tag id=tag.id %}" target="_blank">
+    <img src="{{ MEDIA_URL }}img/printer.png" 
+         alt="Print tag"
+         title="Print tag" />
+  </a>
+  {% comment %}<!-- TODO: ...
+  <a href="{% url trc_me.web.views.delete_tag id=tag.id %}">
+    <img src="{{ MEDIA_URL }}img/tag_blue_delete.png" 
+         alt="Delete tag"
+         title="Delete tag" />
+  </a>
+  -->{% endcomment %}
+  {% if initial %}
+  <a href="{% url trc_me.web.views.update_tag code=tag.code %}">
+    <img src="{{ MEDIA_URL }}img/icon.png" 
+         alt="Raise initial flag"
+         title="Raise initial flag" />
+  </a>
+  {% endif %}
+  {% else %}
+  {% if user.is_authenticated %}
+  {% comment %}
+  User is not tag owner, and is authenticated
+  <!-- TODO: Hide if user is already tracking, and show Unsubscribe instead -->
+  {% endcomment %}
+  <!--
+  <button>
+    <img alt="Track"
+         title="Track"
+         src="{{ MEDIA_URL }}img/find.png" />
+     Track
+  </button>
+  -->
+  {% endif %}
+  {% endif %}
+  
+</div>
+
+<div class="tag-long">
+  {% comment %}
+  <!-- TODO: Paging -->
+  {% endcomment %}
+  
+  {% with flags.count as n %}
+  <p>This tag is {{ tag.get_visibility_display|lower }} and has {{ n|apnumber }} visible flag{{ n|pluralize }}.</p>
+  {% endwith %}
+  
+  <p>
+    {% for flag in flags %}
+    {% if forloop.first %}
+    <b>
+      {% include "mobile/flag_row.html" %} 
+    </b>
+    <div style="color: #666; margin-left: 2em; padding-left: 4px;">
+      This flag earned {{ flag.points|apnumber }} point{{ flag.points|pluralize }}.
+    </div>
+  </p>
+  <p>
+    {% else %}
+    {% include "mobile/flag_row.html" %}
+    {% endif %}
+    {% endfor %}
+  </p>
+</div>

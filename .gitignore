@@ -1,0 +1,9 @@
+*.pyc
+doc/_build/
+src/trc_me/settings.py
+src/trc_me/media/flag/
+src/trc_me/media/profile/
+src/trc_me/media/tag/
+src/trc_me/wsgi/django.wsgi
+src/trc_me/media/admin
+src/trc_me/trcme.sqlite

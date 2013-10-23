@@ -1,0 +1,80 @@
+{% comment %}
+This file is part of trc.me.
+
+trc.me is free software: you can redistribute it and/or modify it under the
+terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
+
+trc.me is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+details.
+
+You should have received a copy of the GNU General Public License along with
+trc.me. If not, see <http://www.gnu.org/licenses/>.
+
+{% endcomment %}
+{% load comments %}
+
+{% with flag.tag as tag %}
+{% include "web/tag_row.html" %}
+{% endwith %}
+
+<p>Flagged 
+{% if flag.user %}
+by 
+{% if flag.user == user %}
+you
+{% else %}
+<a href="{% url trc_me.web.views.view_user username=flag.user %}"><span class="user">{{ flag.user }}</span></a>
+{% endif %}
+{% else %}
+anonymously
+{% endif %} 
+at {{ flag.created_at }}</p>
+
+<p class="flag_description">
+  {% if flag.img.name %}
+  <img alt="trc.me/{{ flag.code }}" src="{{ flag.img.url }}" style="max-width: 210px;"/><br/>
+  {% endif %}
+  {{ flag.note }}
+</p>
+
+{% if show_map %}
+<p class="map">
+  <img src="http://maps.google.com/maps/api/staticmap?center={{ flag.position.latitude }},{{ flag.position.longitude }}&zoom=13&size=210x210&markers=color:0xFFDE16|{{ flag.position.latitude }},{{ flag.position.longitude }}&sensor=false" alt="Map" />
+</p>
+{% endif %}
+
+<p>Points: {{ flag.points }}</p>
+
+{% if flag.visibility == "pub" %}
+<div class="socnet_buttons">
+  <!-- Tweet -->
+  <a href="http://twitter.com/share" 
+     class="twitter-share-button" 
+     data-url="http://trc.me/flag/{{ flag.id }}/view/" 
+     data-count="none">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+  <br />
+  <!-- Like -->
+  <script src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script>
+  <fb:like href="http://trc.me/flag/{{ flag.id }}/view/" 
+           show_faces="true" 
+           width="450"></fb:like>
+</div>
+{% endif %}
+
+{% comment %}
+<!-- TODO: Coming soon
+<p><a href="#"><img src="{{ MEDIA_URL }}img/error.png" alt="Warning" /> Report this flag</a></p>
+-->
+{% endcomment %}
+
+{% render_comment_list for flag %}
+
+{% if user.is_authenticated %}
+{% render_comment_form for flag %}
+{% else %}
+<p><a href="{% url trc_me.web.views.index %}">Log in</a> to comment.</p>
+{% endif %}

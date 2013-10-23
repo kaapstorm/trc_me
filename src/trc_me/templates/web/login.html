@@ -1,0 +1,56 @@
+{% comment %}
+This file is part of trc.me.
+
+trc.me is free software: you can redistribute it and/or modify it under the
+terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
+
+trc.me is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+details.
+
+You should have received a copy of the GNU General Public License along with
+trc.me. If not, see <http://www.gnu.org/licenses/>.
+
+{% endcomment %}
+<div id="login_outer">
+  <div class="error"></div>
+  <form id="authform">
+    <input id="id_username" 
+           name="username" 
+           maxlength="30" 
+           type="text"
+           placeholder="Username" />
+    <br />
+    <input name="password" 
+           id="id_password" 
+           type="password"
+           placeholder="Password" />
+    {% csrf_token %}
+    <div style="text-align: right;">
+      <a href="#"
+         onclick="$('#login_outer').hide(); 
+                  $('#register_outer').show(); 
+                  return false;">Register free</a>
+      <button onclick="trcme.dialog.login.loginRequest(); 
+                       return false;">Log in</button>
+    </div>
+  </form>
+  <hr />
+</div>
+<div id="register_outer" style="display: none;">
+  <div class="error"></div>
+  <form id="registerform">
+    <input name="username" type="text" placeholder="Username" /><br />
+    <input name="email" type="text" placeholder="E-mail address" /><br />
+    <input name="password1" type="password" placeholder="Password" />
+    <input name="password2" type="password" placeholder="Confirm password" />
+    {% csrf_token %}
+  </form>
+  <div style="text-align: right;">
+    <button onclick="trcme.dialog.login.registerRequest(); return false;">Register</button>
+  </div>
+  <hr />
+</div>

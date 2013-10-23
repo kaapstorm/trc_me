@@ -1,0 +1,101 @@
+{% comment %}
+This file is part of trc.me.
+
+trc.me is free software: you can redistribute it and/or modify it under the
+terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
+
+trc.me is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+details.
+
+You should have received a copy of the GNU General Public License along with
+trc.me. If not, see <http://www.gnu.org/licenses/>.
+
+{% endcomment %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>{% block title %}trc.me{% endblock %}</title>
+
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+  <!--[if lt IE 9]>
+  <script src="{{ MEDIA_URL }}js/html5.js"></script>
+  <![endif]-->
+  <script src="{{ MEDIA_URL }}js/modernizr-1.5.min.js"></script>
+  <script src="{{ MEDIA_URL }}js/jquery-1.4.2.min.js"></script>
+  <script src="{{ MEDIA_URL }}js/jquery-ui-1.8.custom.min.js"></script>
+  <script src="{{ MEDIA_URL }}js/jquery.form.js"></script>
+  <script src="{{ MEDIA_URL }}js/trcme.js"></script>
+  <script src="{{ MEDIA_URL }}js/trcme.maps.js"></script>
+  <link rel="stylesheet" href="{{ MEDIA_URL }}css/default.css" />
+  <link rel="shortcut icon" type="image/x-icon" href="{{ MEDIA_URL }}img/favicon.ico" />
+  <meta name="google-site-verification" content="d_IuVbkV781lLF9xqi9K2d0Yox6VYgKI45fAip8iCPs" />
+
+  <!--[if lt IE 9]>
+  <style>
+  #dialog_outer {
+    background-color: white;
+  }
+  #sidepanel_outer {
+    background-color: white;
+  }
+  .titlebar {
+    background-color: gray;
+  }
+  </style>
+  <![endif]-->
+
+  <script type="text/javascript">
+  trcme.options.baseurl = '{% url trc_me.web.views.index %}';
+  trcme.options.mediaurl = '{{ MEDIA_URL }}';  
+  $(document).ready(function () {
+    // Make dialog box draggable
+    $('#dialogs_container').draggable({handle: '.titlebar'});
+  });
+  </script>
+  
+  {% block head %}
+  {% endblock %}
+  
+</head>
+<body>
+  <div id="map_canvas"></div>
+  <div id="dialogs_container">
+    <div id="dialog_outer"
+         style="float: left;">
+      <div id="dialog_titlebar" class="titlebar">
+        <img src="{{ MEDIA_URL }}img/icon.png" alt="&#x2690;" /> 
+        <span id="login_status">
+          {% if user.is_authenticated %}
+          <a href="{% url trc_me.web.views.view_user username=user.username %}">{{ user.username }}</a>
+          {% else %}
+          you are not logged in
+          {% endif %}
+        </span>
+        <div class="panel_icon hide_panel_icon" style="float: right;">
+          <a href="#" 
+             style="text-decoration: none;"
+             onclick="trcme.dialog.panel.hide(); 
+                      return false;"><img alt="&nbsp;&#x00ab;&nbsp;" src="{{ MEDIA_URL }}img/control_rewind.png" /></a>
+        </div>
+        <div class="panel_icon show_panel_icon" style="display: none;">
+          <a href="#" 
+             style="text-decoration: none;"
+             onclick="trcme.dialog.panel.show(); 
+                      return false;"><img alt="&nbsp;&#x00bb;&nbsp;" src="{{ MEDIA_URL }}img/control_fastforward.png" /></a>
+        </div>
+      </div>
+      <div id="dialog">{% block dialog %}{% endblock %}</div>
+    </div>
+    <div id="sidepanel_outer">
+      <div id="sidepanel_titlebar" class="titlebar">
+      </div>
+      <div id="sidepanel">{% block sidepanel %}{% endblock %}</div>
+    </div>      
+  </div>
+</body>
+</html>

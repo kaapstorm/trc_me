@@ -1,0 +1,90 @@
+{% comment %}
+This file is part of trc.me.
+
+trc.me is free software: you can redistribute it and/or modify it under the
+terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
+
+trc.me is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+details.
+
+You should have received a copy of the GNU General Public License along with
+trc.me. If not, see <http://www.gnu.org/licenses/>.
+
+{% endcomment %}
+<form action="{% url trc_me.web.views.create_tag %}" method="post" enctype="multipart/form-data">
+  
+  {% comment %}
+  <!-- for debugging -->
+  <div style="background-color: #ccc;">
+    {{ form.as_p }}
+  </div>
+  {% endcomment %}
+  
+  <p>{{ form.description.errors }}
+    <textarea id="id_description" 
+           name="description" 
+           maxlength="255" 
+           placeholder="Description"
+           rows="5"
+           onchange="var tt = trcme.util.extractHashtags($(this).val());
+                     $('#hashtags_span').html(tt);
+                     $('#id_hashtags').val(tt);"></textarea>
+           <br/>
+     A description that identifies the object. Use #tags (like "#clothing" or 
+     "#car") to make the object searchable. 
+     <span class="char_count">255 characters remaining.</span>
+  </p>
+  
+  <p><label for="id_hashtags">#tags:</label> 
+    <span id="hashtags_span"></span>
+    <input id="id_hashtags" name="hashtags" type="hidden" /></p>
+  
+  <p>{{ form.img.errors }}
+    <label for="id_img">Image:</label>
+    <input name="img" id="id_img" type="file" size="5"></p>
+  
+  <p>{{ form.visibility.errors }}
+    <label for="id_visibility_0">Visibility:</label><br/>
+    <label for="id_visibility_0">
+      <input id="id_visibility_0" 
+             value="prv" 
+             name="visibility" 
+             type="radio">
+      Private</label>
+      <img src="{{ MEDIA_URL }}img/information.png" 
+           alt="i" 
+           title="Private tags are not visible to the public, and when they are flagged, the flagger can only see their own flag."><br/>
+    <label for="id_visibility_1">
+      <input id="id_visibility_1" 
+             value="dsc" 
+             name="visibility" 
+             type="radio"> 
+      Discoverable</label>
+      <img src="{{ MEDIA_URL }}img/information.png" 
+           alt="i" 
+           title="Discoverable tags are not returned by searches, but after someone has flagged it, they can see all its flags. Discoverable tags are great for games and promotions."><br/>
+    <label for="id_visibility_2">
+      <input checked="checked" 
+             id="id_visibility_2" 
+             value="pub" 
+             name="visibility" 
+             type="radio"> 
+      Public</label>
+      <img src="{{ MEDIA_URL }}img/information.png" 
+           alt="i" 
+           title="Public tags are returned by searches. You don't need to have flagged it in order to see it. Public tags are great for sharing things with other people.">
+  </p>
+
+  <!-- TODO: Allow user to greate tag groups
+  <label for="id_tag_groups">Tag groups:</label><br/>
+  <select multiple="multiple" name="tag_groups" id="id_tag_groups"></select> 
+  -->
+  
+  {% csrf_token %}
+  <input type="submit" value="Create tag"/>
+  <button onclick="document.location.href = '{% url trc_me.web.views.index %}'; return false;">Cancel</button>
+</form>

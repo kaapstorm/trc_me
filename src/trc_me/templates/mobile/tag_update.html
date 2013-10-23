@@ -1,0 +1,208 @@
+{% extends "mobile/base.html" %}
+{% comment %}
+This file is part of trc.me.
+
+trc.me is free software: you can redistribute it and/or modify it under the
+terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
+
+trc.me is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+details.
+
+You should have received a copy of the GNU General Public License along with
+trc.me. If not, see <http://www.gnu.org/licenses/>.
+
+{% endcomment %}
+
+{% block head %}
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?v=3.2&sensor=true"></script>
+<script type="text/javascript">
+  
+function handleError(err) {
+  if (err.code == 1) {
+    // User said no. TODO: Record this. 
+  }
+  getLocationAddress();
+}
+
+function getLocationAddress() {
+  trcme.options.position = null;
+  trcme.options.sensor = false;
+  $('#confirmation-map').hide();
+  $('#manual-entry').show();
+}
+
+function showMap(centre, sensor) {
+  // Clean parameter
+  centre = escape(centre);
+  var url = 'http://maps.google.com/maps/api/staticmap?center=' + centre 
+            + '&zoom=' + trcme.options.zoom
+            + '&size=210x210' // Note: We are using 210-pixel-wide images
+            + '&markers=color:0xFFDE16|' + centre
+            + '&sensor=' + sensor;
+  var html = '<p class="map"><img src="' + url + '" alt="' + centre + '" /></p>'
+             + '<p>Is this correct? '
+             + '<button onclick="updateTag(); return false;">Yes</button> '
+             + '<button onclick="getLocationAddress(); return false;">No</button>'
+             + '</p>';
+  $('#confirmation-map').html(html);
+  $('#confirmation-map').show();
+}
+
+function showMapUsingCoords(position) {
+  trcme.options.sensor = true;
+  trcme.options.position = position;
+  showMap(position.coords.latitude + ',' + position.coords.longitude, trcme.options.sensor);
+}
+
+function showMapUsingAddress() {
+  trcme.options.sensor = false;
+  flagAddress = $('input[name="address"]').val();
+  showMap(flagAddress, trcme.options.sensor);
+}
+
+function setFlagPosition(results, status) {
+  if (status == google.maps.GeocoderStatus.OK) {
+    trcme.options.position = {
+      coords: {
+        latitude: results[0].geometry.location.lat(),
+        longitude: results[0].geometry.location.lng(),
+        accuracy: 10.0 // Assuming location_type == ROOFTOP
+      }
+    }
+    if (results[0].geometry.location_type != 'ROOFTOP') {
+      trcme.options.position.coords.accuracy = 100.0;
+    }
+    trcme.dialog.updateTag.postForm();
+    
+  } else {
+    // Google changed their mind; they can't find the address after all.
+    if (console) {
+      console.log('No results found: ' + status);
+    }
+  }
+}
+
+function updateTag() {
+  if (trcme.options.position == null) {
+    // User entered address manually. Geocode it.
+    var geocoder = new google.maps.Geocoder();
+    if (geocoder) {
+      geocoder.geocode(
+        { address: flagAddress }, 
+        setFlagPosition
+      );
+    }
+  } else {
+    trcme.dialog.updateTag.postForm();
+  }
+}
+
+  
+$(document).ready(function () {
+  trcme.dialog.updateTag.setCode('{{ tag.code }}');
+  trcme.dialog.updateTag.mobileOnReady();
+  {% if not user.is_authenticated %}
+  trcme.dialog.login.onReady();
+  {% endif %}
+  
+  if (Modernizr.geolocation) {
+    // Get location
+    trcme.options.browserSupport = true;
+    $('#manual-entry').hide();
+    navigator.geolocation.getCurrentPosition(showMapUsingCoords, handleError);
+    
+  } else if (google.gears) {
+    // Try Google Gears
+    trcme.options.browserSupport = true;
+    $('#manual-entry').hide();
+    var geo = google.gears.factory.create('beta.geolocation');
+    geo.getCurrentPosition(showMapUsingCoords, handleError);
+    
+  } else {
+    // No geolocation support
+    trcme.options.browserSupport = false;
+    // Ask user for address.
+    getLocationAddress();
+  } 
+  
+});
+</script>
+{% endblock %}
+
+{% block dialog %}
+<h1><img src="{{ MEDIA_URL }}img/logo.png" alt="trc.me" /></h1>
+
+{% if not user.is_authenticated %}
+{% with authform as form %}
+{% include "mobile/login_dialog.html" %}
+{% endwith %}
+{% endif %}
+
+{% include "web/tag_short.html" %}
+
+<p><a href="{% url trc_me.web.views.view_tag id=tag.id %}">See other flags</a></p>
+
+<h2>Raise new flag</h2>
+<form action="{% url trc_me.web.views.update_tag code=tag.code %}" method="post" enctype="multipart/form-data">
+  
+  <p class="for_users" {% if not user.is_authenticated %}style="display: none;"{% endif %}>
+    This flag is: <br/> 
+    <input id="id_visibility_pub" 
+           name="visibility" 
+           type="radio" 
+           value="pub" 
+           checked="checked" /> public<br/>
+    <input id="id_visibility_prv" 
+           name="visibility" 
+           type="radio" 
+           value="prv" /> private
+  </p>
+  
+  <p>
+    Notes: <br />
+    <textarea id="id_name" 
+              name="note"
+              rows="5"
+              onchange="var tt = trcme.util.extractHashtags($(this).val());
+                     $('#hashtags_span').html(tt);
+                     $('#id_hashtags').val(tt);"></textarea>
+  </p>
+  
+  <p><label for="id_hashtags">#tags:</label> 
+    <span id="hashtags_span"></span>
+    <input id="id_hashtags" name="hashtags" type="hidden" /></p>
+  
+  <p>
+    Pic: <input id="id_img" name="img" type="file" size="5" />
+  </p>
+  
+  <div id="manual-entry">
+    <p>
+      <input name="address" 
+             type="text"
+             placeholder="Where is {{ tag }}?" />
+      <button id="check-address" 
+              onclick="showMapUsingAddress(); return false;">Check</button>
+    </p>
+  </div>
+  
+  <div id="confirmation-map" style="display: none;"></div>
+
+  <div style="display: none;">
+    {{ positionform.as_p }}
+  </div>
+  {% csrf_token %}
+  
+  <!--
+  <p>
+    <button id="flag_button" 
+            onclick="trcme.dialog.updateTag.postForm();">Flag!</button> 
+  </p>
+  -->
+</form>
+
+{% endblock %}

@@ -1,0 +1,52 @@
+{% comment %}
+This file is part of trc.me.
+
+trc.me is free software: you can redistribute it and/or modify it under the
+terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
+
+trc.me is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+details.
+
+You should have received a copy of the GNU General Public License along with
+trc.me. If not, see <http://www.gnu.org/licenses/>.
+
+{% endcomment %}
+<div id="dialog_content">
+  
+  <form action="{% url trc_me.web.views.search %}" method="get">
+    <noscript>
+      <noscript><label for="q">Search: </label></noscript>
+    </noscript>
+    <input name="q" 
+           type="text"
+           value="{{ q }}" 
+           placeholder="Search for flags" />
+    <input type="submit" value="Go" /><br />
+  </form>
+  <hr />
+  
+  {% for flag in flags %}
+  {% include "web/flag_row.html" %}
+  {% endfor %}
+  
+  {% for tag in tags %}
+  {% include "web/tag_row.html" %}
+  {% endfor %}
+  
+  {% if not flags and not tags %}
+  No results found.
+  {% endif %}
+
+</div>
+<div id="dialog_nav">
+  <nav>
+    <a href="{% url trc_me.web.views.index %}">Home</a>
+    {% if user.is_authenticated %}
+    | <a href="{% url trc_me.web.views.view_user username=user.username %}">Your profile</a>
+    {% endif %}
+  </nav>
+</div>

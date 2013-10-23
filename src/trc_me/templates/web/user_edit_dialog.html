@@ -1,0 +1,42 @@
+{% comment %}
+This file is part of trc.me.
+
+trc.me is free software: you can redistribute it and/or modify it under the
+terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
+
+trc.me is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+details.
+
+You should have received a copy of the GNU General Public License along with
+trc.me. If not, see <http://www.gnu.org/licenses/>.
+
+{% endcomment %}
+<form action="{% url trc_me.accounts.views.edit_user %}"
+      method="post"
+      enctype="multipart/form-data">
+
+  <label class="noplaceholder" for="id_first_name">First name: </label>
+  <input id="id_first_name" name="first_name" type="text" placeholder="First name" value="{{ u.first_name }}" />
+  <br />
+  
+  <label class="noplaceholder" for="id_last_name">Last name: </label>
+  <input id="id_last_name" name="last_name" type="text" placeholder="Last name" value="{{ u.last_name }}" />
+  <br />
+  
+  <label class="noplaceholder" for="id_email">E-mail address:</label>
+  <input type="text" placeholder="E-mail address" name="email" id="id_email" value="{{ u.email }}" />
+  <br />
+
+  <label for="id_img">Image: </label>
+  <input name="img" id="id_img" type="file" size="5" /><br />
+  
+  {% csrf_token %}
+  <p>
+    <input type="submit" value="Save" />
+    <a href="{% url trc_me.web.views.view_user username=user.username %}">Cancel</a>
+  </p>
+</form>

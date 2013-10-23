@@ -1,0 +1,94 @@
+{% comment %}
+This file is part of trc.me.
+
+trc.me is free software: you can redistribute it and/or modify it under the
+terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
+
+trc.me is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+details.
+
+You should have received a copy of the GNU General Public License along with
+trc.me. If not, see <http://www.gnu.org/licenses/>.
+
+{% endcomment %}
+{% if not user.is_authenticated %}
+{% include "web/login.html" %}
+{% endif %}
+
+{% include "web/tag_short.html" %}
+
+<p>
+  <button onclick="document.location.href='{% url trc_me.web.views.view_tag id=tag.id %}'; return false;">See other flags</button>
+</p>
+
+<h2>Raise new flag</h2>
+<form action="{% url trc_me.web.views.update_tag code=tag.code %}" method="post" enctype="multipart/form-data">
+  
+  <p class="for_users" {% if not user.is_authenticated %}style="display: none;"{% endif %}>
+    This flag is: <br/> 
+    <input id="id_visibility_pub" 
+           name="visibility" 
+           type="radio" 
+           value="pub" 
+           checked="checked" /> public<br/>
+    <input id="id_visibility_prv" 
+           name="visibility" 
+           type="radio" 
+           value="prv" /> private
+  </p>
+  
+  <div id="manual-entry">
+    <p>
+      <input name="address" 
+             type="text"
+             placeholder="Where is {{ tag }}?" />
+      <button id="check-address" 
+              onclick="trcme.dialog.updateTag.centerMapOnAddress(); return false;">Check</button>
+    </p>
+  </div>
+  
+  <p>
+    Notes: <br />
+    <textarea id="id_name" 
+              name="note"
+              rows="5"
+              onchange="var tt = trcme.util.extractHashtags($(this).val());
+                        $('#hashtags_span').html(tt);
+                        $('#id_hashtags').val(tt);"></textarea>
+  </p>
+  
+  <p><label for="id_hashtags">#tags:</label> 
+    <span id="hashtags_span"></span>
+    <input id="id_hashtags" name="hashtags" type="hidden" />
+  </p>
+  
+  <p>
+    Pic: <input id="id_img" name="img" type="file" size="5" />
+  </p>
+  
+  <div style="display: none;">
+    <table>
+    {{ positionform }}
+    </table>
+  </div>
+  {% csrf_token %}
+  
+  <p>
+    <input type="checkbox" 
+           onclick="if ($(this).attr('checked')) { 
+                      $('#flag_button').removeAttr('disabled'); 
+                    } else { 
+                      $('#flag_button').attr('disabled', 'disabled'); 
+                    }" 
+           name="confirm_flag" />
+    <label for="confirm_flag">Are you sure the flag is in the right place?</label>
+    <br />
+    <button id="flag_button" 
+            onclick="trcme.dialog.updateTag.postForm();"
+            disabled="disabled">Flag!</button> 
+  </p>
+</form>

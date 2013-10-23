@@ -1,0 +1,69 @@
+/**
+ *   trc.me default stylesheet.
+ * 
+ * Standard colours
+ * ----------------
+ * 
+ * yellow: #ffde16
+ * background blue: #c0c9ff
+ * charcoal: #58585a
+ * 
+ */
+
+body {
+  font-family: sans-serif;
+  margin: 0;
+  text-align: center;
+  background-color: #c0c9ff;
+  color: #58585a;  
+  font-size: 80%;
+}
+
+#content {
+  margin: 10px auto; 
+  border: 2px solid #58585a;
+  padding: 10px;
+  width: 216px; /* 240 - 2 * 10 - 2 * 2 */
+  text-align: left;
+  background-color: white;
+}
+
+h1 {
+  text-align: center;
+}
+
+.code-short {
+  margin-left: 1em;
+}
+
+.keyword {
+  font-weight: bold
+}
+
+.important {
+  color: red;
+}
+
+th {
+  vertical-align: top;
+  text-align: right;
+}
+
+input[type=text] {
+  width: 10em;
+}
+
+input[type=password] {
+  width: 10em;
+}
+
+.map img {
+  border: 1px solid #58585a;
+}
+
+footer nav {
+  display: block;
+  margin-top: 2em;
+  font-size: smaller;
+  text-align: center;
+}

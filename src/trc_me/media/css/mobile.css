@@ -1,0 +1,217 @@
+/**
+ *   trc.me default stylesheet.
+ * 
+ * Standard colours
+ * ----------------
+ * 
+ * yellow: #ffde16
+ * charcoal: #58585a
+ * 
+ */
+
+/* Tags */
+
+body {
+  margin: 0;
+  font-family: sans-serif;
+  font-size: 80%;
+  color: #222222;
+  background-color: #99B3CC; /* Google Maps sea blue */
+}
+
+h1 {
+  text-align: center;
+}
+
+a {
+  color: #3399CC;
+}
+
+th {
+  vertical-align: top;
+  text-align: right;
+}
+
+input[type=text] {
+  font-size: 100%;
+  width: 10em;
+  color: gray;
+  border: 1px solid silver;
+  border-radius: 6px;
+  -moz-border-radius: 6px;
+  padding: 5px;
+  margin: 5px 0 5px 0;
+}
+
+input[type=password] {
+  font-size: 100%;
+  width: 10em;
+  color: gray;
+  border: 1px solid silver;
+  border-radius: 6px;
+  -moz-border-radius: 6px;
+  padding: 5px;
+  margin: 5px 0 5px 0;
+}
+
+button, input[type=submit] {
+  font-size: 100%;
+  font-weight: bold;
+  color: #777; /*#A8A8A8;*/
+  background-color: #E8E8E8;
+  border: 1px solid silver;
+  border-radius: 6px;
+  -moz-border-radius: 6px;
+  padding: 5px;
+}
+
+input[type=image] {
+  border: 0;
+}
+
+textarea {
+  vertical-align: text-top;
+}
+
+hr {
+  border: 0;
+}
+
+img {
+  border: 0;
+  vertical-align: text-top;
+}
+
+footer nav {
+  display: block;
+  margin-top: 2em;
+  font-size: smaller;
+  text-align: center;
+}
+
+/* Classes */
+
+div.info {
+  margin-left: 2em;
+  color: blue;
+}
+
+.djangoform p {
+  /* place fields immediate below each other */
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.flag_row {
+  border-top: 1px dotted #ccc;
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  padding: 2px;
+  margin-top: 2px;
+}
+
+.flag_description {
+  background-color: #DFE1E3;
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  padding: 4px;
+}
+
+.tag_row {
+  background-color: #DFE1E3; 
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  padding: 2px;
+  margin-top: 2px;
+}
+
+.thumb_container {
+  float: left; 
+  padding: 2px;
+}
+
+.flag_thumb {
+  height: 2em;
+}
+
+.rowbreak {
+  clear: both;
+}
+
+.keyword {
+  font-weight: bold;
+}
+
+/** Used to emphasise the trc.me trademark */
+.tm {
+  font-weight: bold;
+  font-style: italic;
+}
+
+.important {
+  color: red;
+}
+
+.map img {
+  border: 1px solid #58585a;
+}
+
+.char_count {
+  color: gray;
+}
+
+.titlebar {
+  height: 20px;
+  background-color: #7B7D7F;
+  padding: 2px;
+  margin-bottom: 2px;
+  text-align: left;
+  color: silver;
+  font-size: small;
+  overflow: hidden;
+}
+
+.titlebar a {
+  color: #ccc;
+}
+
+dd {
+  border-bottom: 1px dotted #ccc;
+}
+
+#dialog h1 {
+  /* Standard comment templates use h1 for headings */
+  text-align: left;
+  font-size: 1em;
+}
+
+/* IDs */
+
+#hashtags_span {
+  color: blue;
+}
+
+#dialog_outer {
+  margin: 3px;
+  background-color: #E5ECF2; 
+  border: 1px solid #58585a;
+  border-radius: 6px;
+  -moz-border-radius: 6px;
+  padding: 3px;
+}
+
+#dialog {
+  padding: 5px;
+  text-align: left;
+  overflow: auto;
+}
+
+#dialog_content {
+  padding: 0;
+  overflow: auto;
+}
+
+#dialog_nav {
+  padding-top: 1em;
+  text-align: center;
+}

@@ -1,0 +1,132 @@
+{% extends "mobile/base.html" %}
+{% comment %}
+This file is part of trc.me.
+
+trc.me is free software: you can redistribute it and/or modify it under the
+terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
+
+trc.me is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+details.
+
+You should have received a copy of the GNU General Public License along with
+trc.me. If not, see <http://www.gnu.org/licenses/>.
+
+{% endcomment %}
+{% load humanize %}
+
+{% block title %}trc.me - {{ u.username }}{% endblock %}
+
+{% block head %}
+<link rel="alternate" type="application/atom+xml" href="{% url user_feed username=u.username %}" />
+<script type="text/javascript">
+
+$(document).ready(function () {
+  // Sort out labels and placeholder text
+  trcme.dialog.editUser.onReady();
+  trcme.dialog.chpwd.onReady();
+});
+
+</script>
+<script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+<script type="text/javascript" src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script>
+{% endblock %}
+
+{% block dialog %}
+<div id="dialog_content">
+  {% if profile.img.name %}
+  <img src="{{ profile.img.url }}" alt="{{ u.username }}" /><br />
+  {% endif %}
+  
+  <div style="float: right;">
+    {% if u == user %}
+    <a href="{% url trc_me.accounts.views.edit_user %}">
+      <img alt="Edit profile" 
+           title="Edit profile" 
+           src="{{ MEDIA_URL }}img/user_edit.png" />
+    </a>
+    <a href="{% url trc_me.accounts.views.change_password %}">
+        <img alt="Change password" 
+           title="Change password" 
+           src="{{ MEDIA_URL }}img/lock_edit.png" />
+    </a>
+    {% else %}
+    {% if user.is_authenticated %}
+    <!--
+    <button>
+      <img alt="Track"
+           title="Track"
+           src="{{ MEDIA_URL }}img/find.png" />
+       Track
+    </button>
+    -->
+    {% endif %}
+    {% endif %}
+    <br style="clear: both;" />
+  </div>
+  
+  <h2 style="margin-top: 0;">
+    {{ u.username }}
+  </h2>
+  
+  {% if u == user %}
+  <h3><a href="{% url trc_me.web.views.create_tag %}">Create a new tag</a></h3>
+  
+  {% else %}
+  <fb:like href="http://trc.me/user/{{ u.username }}/" layout="button_count" show_faces="true" width="200"></fb:like>
+  
+  {% endif %}
+  
+  <h3>points: {{ profile.points }}</h3>
+  
+  {% if notis %}
+  <h3>notifications:</h3>
+  <p>
+    {% for n in notis %}
+    {% include "web/noti_row.html" %}
+    {% endfor %}
+  </p>
+  {% endif %}
+  
+  {% if tags %}
+  <h3>tags:</h3>
+  <p>
+    {% for tag in tags %}
+    {% include "web/tag_row.html" %}
+    {% endfor %}
+  </p>
+  {% endif %}
+  
+  {% if flags %}
+  <h3>flags:</h3>  
+  <p>
+    {% for flag in flags %}
+    {% if forloop.first %}
+    <b>
+      {% include "mobile/flag_row.html" %}
+    </b>
+    <div style="color: #666; margin-left: 2em; padding-left: 4px;">
+      This flag earned {{ flag.points|apnumber }} point{{ flag.points|pluralize }}.
+    </div>
+  </p>
+  <p>
+    {% else %}
+    {% include "web/flag_row.html" %}
+    {% endif %}
+    {% endfor %}
+  </p>
+  
+  {% endif %}
+</div>
+<div id="dialog_nav">
+  <nav>
+    <a href="{% url trc_me.web.views.index %}">Home</a>
+    {% if user.is_authenticated %}
+    | <a href="{% url trc_me.accounts.views.logout_view %}">Log out</a>
+    {% endif %}
+  </nav>
+</div>
+{% endblock %}
